@@ -30,8 +30,6 @@ export default function GlobalProvider({ children }) {
             }
         }
 
-
-
     }
 
     useEffect(() => {
@@ -48,4 +46,7 @@ export default function GlobalProvider({ children }) {
         </GlobalContext.Provider>
     )
 }
+
+// Esporto anche il contesto così puoi usarlo con useContext
+export { GlobalContext };  
 
