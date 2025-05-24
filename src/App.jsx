@@ -15,24 +15,30 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 
 
+//importo context dove abbiamo la chiamata
+import GlobalProvider from './contexts/GlobalContext'
+
+
 
 function App() {
 
 
   return (
     <>
-      
 
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path='/' element={<TaskList />} />
-          <Route path='/addList' element={<AddTask />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <GlobalProvider>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path='/' element={<TaskList />} />
+            <Route path='/addList' element={<AddTask />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </GlobalProvider>
 
-      
+
+
     </>
   )
 }

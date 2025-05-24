@@ -1,4 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
+import GlobalProvider from "../contexts/GlobalContext";
 
 export default function Header() {
     return (
@@ -18,7 +19,7 @@ export default function Header() {
                     })
 
 
-                    
+
                     }>Aggiungi Task</NavLink>
                 </nav>
             </div>
