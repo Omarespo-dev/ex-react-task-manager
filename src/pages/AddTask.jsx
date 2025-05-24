@@ -1,6 +1,7 @@
 // conterrà il form per aggiungere un nuovo task.
 
 import { useRef, useState } from "react"
+import useTasks from "../hook/useTasks";
 
 // Utilizzare una costante con i caratteri vietati:
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\\\",.<>?/`~";
@@ -22,6 +23,10 @@ export default function AddTask() {
   const selectRef = useRef()
 
 
+
+  //ricavo costoum hook
+  const { addTask } = useTasks(import.meta.env.VITE_API_URL + "/tasks")
+
   function FormSubmit(e) {
     e.preventDefault()
 
@@ -30,7 +35,7 @@ export default function AddTask() {
     // Validazione campo nome
     if (inputControlled.trim() === "") {
       SetErrorName("Il campo non può essere vuoto");
-      
+
     }
 
     if (inputControlled.split("").some(car => symbols.includes(car))) {
@@ -55,6 +60,14 @@ export default function AddTask() {
       Il nome e: ${inputControlled}
       La Descrizione e: ${descriptioRef.current.value}
       La Select e: ${selectRef.current.value}`);
+
+      
+    addTask({
+      title: inputControlled,
+      description: descriptioRef.current.value,
+      status: selectRef.current.value
+    })
+
 
     // Reset campi
     SetInputControlled("");
@@ -106,7 +119,3 @@ export default function AddTask() {
   )
 }
 
-
-//Gestione del Submit del Form:
-
-// Al click del bottone "Aggiungi Task", il form deve SOLO stampare in console l’oggetto task con i valori inseriti (NON deve ancora essere inviata la richiesta all’API).

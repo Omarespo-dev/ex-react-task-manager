@@ -13,9 +13,6 @@ const TaskRow = memo(({data}) => {
 
     console.log("SECONDO RENDER");
     
-    
-
-    
     return (
         <>  
         

@@ -4,14 +4,19 @@ import TaskRow from "../components/TaskRow"
 //Mi servono i dati fatti dalla chiamata importo globalContex
 import { GlobalContext } from "../contexts/GlobalContext"
 //importo il useContext cosi posso utilizzare il contex
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 export default function TaskList() {
-  
+
   console.log("PRIMO RENDER");
 
   //dati ricavati dalla chiamata Api
-  const { data } = useContext(GlobalContext)
+  const { data, getData } = useContext(GlobalContext)
+
+  useEffect(() => {
+    getData()
+  }, [])
+
 
   return (
     <div className="table-container">
@@ -20,7 +25,7 @@ export default function TaskList() {
           <TaskRow data={data} />
         </div>
 
-        
+
       </div>
 
     </div>
