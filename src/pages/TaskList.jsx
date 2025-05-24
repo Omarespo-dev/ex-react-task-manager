@@ -9,12 +9,9 @@ import { useContext, useState } from "react"
 export default function TaskList() {
   
   console.log("PRIMO RENDER");
-  
 
-  const { data, setData } = useContext(GlobalContext)
-
-  //testo il render del componente figlio se viene effutuato
-  const [count, setCount] = useState(0)
+  //dati ricavati dalla chiamata Api
+  const { data } = useContext(GlobalContext)
 
   return (
     <div className="table-container">
@@ -23,8 +20,7 @@ export default function TaskList() {
           <TaskRow data={data} />
         </div>
 
-        {/* test */}
-        <button onClick={() => setCount(count + 1)}> incrementa</button>
+        
       </div>
 
     </div>
