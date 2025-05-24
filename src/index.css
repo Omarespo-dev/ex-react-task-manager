@@ -111,3 +111,32 @@ header {
 .table-section span {
     color: #b5b5b7;
 }
+
+
+/* Container Form */
+.container{
+    /* height: 200px; */
+    /* background-color: rebeccapurple; */
+    display: flex;
+    justify-content: center;
+}
+
+.container-form{
+    background-color: wheat;
+    width: 90%;
+    border-radius: 10px;
+    
+}
+
+.container-form form{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 10px;
+    
+}
+
+.container-form form input,select,textarea{
+   padding: 5px;
+   margin: 10px;
+}
