@@ -72,8 +72,6 @@ export default function useTasks(url) {
         try{
             const response = await axios.delete(`${url}/${taskId}`)
 
-            // SetData(response.data)
-
             // Caso di successo della chiamata e insuccesso
             if(response.data.success){
                 SetData(curr => curr.filter(task => {

@@ -42,7 +42,7 @@ export default function AddTask() {
     // Validazione campo nome
     if (inputControlled.trim() === "") {
       SetErrorName("Il campo non può essere vuoto");
-
+      return
     }
 
     if (inputControlled.split("").some(car => symbols.includes(car))) {
