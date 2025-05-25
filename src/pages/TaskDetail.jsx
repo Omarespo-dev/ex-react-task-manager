@@ -17,6 +17,10 @@ import dayjs from 'dayjs';
 //redirect
 import { useNavigate, useParams } from "react-router-dom";
 
+
+//importo la modale
+import Modal from "../components/Modal";
+
 export default function TaskDetail() {
     //ricavo dati task
     //dati ricavati dalla chiamata Api
@@ -33,9 +37,29 @@ export default function TaskDetail() {
     //recupero id dal url
     const { id } = useParams();
 
-    // faccio il find cose 
+    // faccio il find per ritornare il primo oggetto che soddisfa questa condizione
     const task = data.find(t => t.id === parseInt(id));
-    console.log(task);
+
+
+    //stato per show della modale on o ff
+    const [show, setShow] = useState(false)
+
+
+    //funzione per la conferma della modale all invio 
+    async function ConfirmModal() {
+
+        //aspetto il risultato della promise
+        const response = await removeTask(task.id)
+
+        if (!response) {
+            toast.success("Task eliminata con successo")
+            navigate("/");
+        } else {
+            toast.error("Errore durante l'eliminazione")
+        }
+
+
+    }
 
     return (
 
@@ -52,18 +76,7 @@ export default function TaskDetail() {
                     <p>Descrizione: {task.description}</p>
                     <p>Status: {task.status}</p>
                     <p>Creato: {dayjs(task.createdAt).format('DD/MM/YY')} </p>
-                    <button onClick={async () => {
-                        //aspetto il risultato della promise
-                        const response = await removeTask(task.id)
-
-                        if (!response) {
-                            toast.success("Task eliminata con successo")
-                            navigate("/");
-                        } else {
-                            toast.error("Errore durante l'eliminazione")
-                        }
-
-                    }}>Elimina Task</button>
+                    <button onClick={() => setShow(true)} >Elimina Task</button>
                 </section>
 
                     :
@@ -71,7 +84,13 @@ export default function TaskDetail() {
                 }
 
 
-
+                <Modal
+                    title="Sei sicuro di procedere?"
+                    content="Opzione e irreversibile"
+                    show={show}
+                    onClose={() => setShow(false)}
+                    onConfirm={ConfirmModal}
+                />
 
 
 
@@ -80,3 +99,6 @@ export default function TaskDetail() {
         </div>
     )
 }
+
+
+
