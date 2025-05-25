@@ -140,3 +140,32 @@ header {
    padding: 5px;
    margin: 10px;
 }
+
+
+/* detail page */
+
+.container-detail{
+    /* background-color: rebeccapurple; */
+    display: flex;
+    justify-content: center;
+}
+
+.detail{
+    /* background-color: #b5b5b7; */
+    display: flex;
+    width: 90%;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.detail section{
+    background-color: rgb(239, 193, 193);
+    margin: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+}
+
+.detail section p{
+    margin: 10px;
+}

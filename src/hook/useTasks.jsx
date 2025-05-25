@@ -8,8 +8,8 @@ export default function useTasks(url) {
     //stato locale per i dati || // appena inviamo la task il server ci risponde con la task appena creata e lo stato ci serve per mostrarlo in page
     const [data, SetData] = useState([])
 
-    
-    
+
+
 
     // Creare un hook useTasks() che recupera i task iniziali con una richiesta GET a /tasks e li memorizza in uno stato locale (useState).
     async function getData() {
@@ -21,9 +21,13 @@ export default function useTasks(url) {
 
         } catch (err) {
 
-            if (err) {
-                console.err("Errore nel server", err.response.status)
+            console.log("Errore completo:", err.response);
+            // Errore di rete (es. server non raggiungibile, timeout)
+            if (!err.response) {
+                throw new Error("Errore di connessione al server");
             }
+            // Errore dal server (es. 400, 500, con messaggio specifico)
+            throw new Error(err.response?.data?.message || "Errore del server");
         }
     }
 
@@ -53,9 +57,12 @@ export default function useTasks(url) {
 
         } catch (err) {
 
-            if (err) {
-                console.err("Errore del server ", err.response.status)
+            // Gestiamo specificamente gli errori di rete
+            if (!err.response) {
+                throw new Error("Errore di connessione al server");
             }
+            // Altri errori del server
+            throw new Error(err.response?.data?.message || "Errore del server");
         }
 
     }
@@ -68,7 +75,7 @@ export default function useTasks(url) {
 
     }
 
-    return { data, addTask, removeTask, updateTask, getData}
+    return { data, addTask, removeTask, updateTask, getData }
 }
 
 

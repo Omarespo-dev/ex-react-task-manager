@@ -6,29 +6,35 @@ import dayjs from 'dayjs';
 //importo memo per evitare il re render di questo componente
 import { memo, useState } from "react";
 
+
+//import link
+import { Link } from 'react-router-dom';
+
 // mostrerà l'elenco dei task.
 
 
-const TaskRow = memo(({data}) => {
+const TaskRow = memo(({ data }) => {
 
     console.log("SECONDO RENDER");
-    
+
     return (
-        <>  
-        
+        <>
+
             <div className="nome-colonna">
                 <span>Nome</span>
                 {data.map(element => (
                     <section key={element.id} className="table-section">
-                        <span>
-                            {element.title}
-                        </span>
+                        <Link to={"/task/:id"}>
+                            <span>
+                                {element.title}
+                            </span>
+                        </Link>
                     </section>
                 ))}
-                
+
             </div>
 
-            
+
             <div className="stato-colonna">
                 <span>Stato</span>
                 {data.map(element => (
@@ -63,7 +69,7 @@ const TaskRow = memo(({data}) => {
                     </section>
                 ))}
             </div>
-            
+
         </>
 
     )

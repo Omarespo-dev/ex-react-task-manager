@@ -7,6 +7,11 @@ import useTasks from "../hook/useTasks";
 const symbols = "!@#$%^&*()-_=+[]{}|;:'\\\",.<>?/`~";
 
 
+//IMPORTO TOAST ALERT
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 export default function AddTask() {
 
   //stato per input controllato
@@ -22,13 +27,15 @@ export default function AddTask() {
   const descriptioRef = useRef()
   const selectRef = useRef()
 
-
-
   //ricavo costoum hook
   const { addTask } = useTasks(import.meta.env.VITE_API_URL + "/tasks")
 
-  function FormSubmit(e) {
+  async function FormSubmit(e) {
     e.preventDefault()
+
+    // Reset errori all'inizio
+    SetError("");
+    SetErrorName("");
 
 
     //validazione del name
@@ -56,24 +63,35 @@ export default function AddTask() {
     }
 
 
-    console.log(`
+
+    try {
+      //aspetta il risultato appena c e l hai mostra messaggio altrimenti entra nel catch
+      await addTask({
+        title: inputControlled,
+        description: descriptioRef.current.value,
+        status: selectRef.current.value
+      })
+      toast.success("Task aggiunta con successo!");
+
+
+      console.log(`
       Il nome e: ${inputControlled}
       La Descrizione e: ${descriptioRef.current.value}
       La Select e: ${selectRef.current.value}`);
 
-      
-    addTask({
-      title: inputControlled,
-      description: descriptioRef.current.value,
-      status: selectRef.current.value
-    })
 
 
-    // Reset campi
-    SetInputControlled("");
-    descriptioRef.current.value = "";
-    selectRef.current.value = "";
-    SetErrorName("")
+      // Reset campi
+      SetInputControlled("");
+      descriptioRef.current.value = "";
+      selectRef.current.value = "";
+
+    } catch (err) {
+      toast.error(err.message);
+      console.error(err)
+    }
+
+
   }
 
 
@@ -108,6 +126,16 @@ export default function AddTask() {
           </select>
 
           <button>Add Task</button>
+
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            closeOnClick
+            pauseOnHover
+            theme="light"
+          />
+
         </form>
 
         <p style={{ color: error ? "red" : null }}>{error} </p>

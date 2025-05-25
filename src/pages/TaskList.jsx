@@ -6,6 +6,9 @@ import { GlobalContext } from "../contexts/GlobalContext"
 //importo il useContext cosi posso utilizzare il contex
 import { useContext, useEffect, useState } from "react"
 
+
+
+
 export default function TaskList() {
 
   console.log("PRIMO RENDER");
@@ -13,6 +16,7 @@ export default function TaskList() {
   //dati ricavati dalla chiamata Api
   const { data, getData } = useContext(GlobalContext)
 
+  // rimonto il componente per rifare la chiamata e aggiornare
   useEffect(() => {
     getData()
   }, [])
@@ -21,8 +25,11 @@ export default function TaskList() {
   return (
     <div className="table-container">
       <div className="table">
+
         <div className="intestazione-set">
+
           <TaskRow data={data} />
+
         </div>
 
 
