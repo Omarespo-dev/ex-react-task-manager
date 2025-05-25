@@ -21,13 +21,13 @@ export default function useTasks(url) {
 
         } catch (err) {
 
-            console.log("Errore completo:", err.response);
+            // console.log("Errore completo:", err.response);
+
             // Errore di rete (es. server non raggiungibile, timeout)
             if (!err.response) {
                 throw new Error("Errore di connessione al server");
             }
-            // Errore dal server (es. 400, 500, con messaggio specifico)
-            throw new Error(err.response?.data?.message || "Errore del server");
+            
         }
     }
 
@@ -61,14 +61,35 @@ export default function useTasks(url) {
             if (!err.response) {
                 throw new Error("Errore di connessione al server");
             }
-            // Altri errori del server
-            throw new Error(err.response?.data?.message || "Errore del server");
+            
         }
 
     }
 
-    function removeTask() {
+    async function removeTask(taskId) {
+        
 
+        try{
+            const response = await axios.delete(`${url}/${taskId}`)
+
+            // SetData(response.data)
+
+            // Caso di successo della chiamata e insuccesso
+            if(response.data.success){
+                SetData(curr => curr.filter(task => {
+                    return task.id === taskId ? false : true
+                }))
+            }else{
+                throw new Error(`${response.data.message}`);
+            }
+
+        }catch(err){
+            
+            if (!err.response) {
+                throw new Error("Errore di connessione al server");
+            }
+            
+        }
     }
 
     function updateTask() {

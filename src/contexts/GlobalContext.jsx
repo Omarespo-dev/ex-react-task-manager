@@ -13,20 +13,25 @@ import useTasks from "../hook/useTasks";
 
 
 export default function GlobalProvider({ children }) {
-    
+
     //Utilizzo hook per le task
-    const {data, addTask, removeTask, updateTask,getData} = useTasks(import.meta.env.VITE_API_URL + "/tasks")
+    const { data, addTask, removeTask, updateTask, getData } = useTasks(import.meta.env.VITE_API_URL + "/tasks")
 
     //Lista 
     console.log(data);
-    
-    return (
-        <GlobalContext.Provider value={{data,addTask,getData}}>
+
+    return (<>
+        
+        <GlobalContext.Provider value={{ data, addTask, getData, removeTask }}>
             {children}
         </GlobalContext.Provider>
+
+    </>
+
+
     )
 }
 
 // Esporto anche il contesto così puoi usarlo con useContext
-export { GlobalContext };  
+export { GlobalContext };
 

@@ -8,7 +8,7 @@ const symbols = "!@#$%^&*()-_=+[]{}|;:'\\\",.<>?/`~";
 
 
 //IMPORTO TOAST ALERT
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -127,14 +127,7 @@ export default function AddTask() {
 
           <button>Add Task</button>
 
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            closeOnClick
-            pauseOnHover
-            theme="light"
-          />
+          
 
         </form>
 

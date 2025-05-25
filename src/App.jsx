@@ -19,12 +19,23 @@ import Footer from './components/Footer'
 import GlobalProvider from './contexts/GlobalContext'
 
 
+//IMPORTO TOAST ALERT
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        theme="light"
+      />
 
       <GlobalProvider>
         <BrowserRouter>
@@ -32,7 +43,7 @@ function App() {
           <Routes>
             <Route path='/' element={<TaskList />} />
             <Route path='/addList' element={<AddTask />} />
-            <Route path='/task/:id' element={<TaskDetail/>} />
+            <Route path='/task/:id' element={<TaskDetail />} />
           </Routes>
           <Footer />
         </BrowserRouter>

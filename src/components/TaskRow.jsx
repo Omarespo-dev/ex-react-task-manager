@@ -8,7 +8,7 @@ import { memo, useState } from "react";
 
 
 //import link
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 // mostrerà l'elenco dei task.
 
@@ -17,6 +17,8 @@ const TaskRow = memo(({ data }) => {
 
     console.log("SECONDO RENDER");
 
+    
+
     return (
         <>
 
@@ -24,7 +26,7 @@ const TaskRow = memo(({ data }) => {
                 <span>Nome</span>
                 {data.map(element => (
                     <section key={element.id} className="table-section">
-                        <Link to={"/task/:id"}>
+                        <Link to={`task/${element.id}`}>
                             <span>
                                 {element.title}
                             </span>
