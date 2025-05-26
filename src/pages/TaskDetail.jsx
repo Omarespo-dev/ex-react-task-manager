@@ -20,6 +20,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 //importo la modale
 import Modal from "../components/Modal";
+import EditTaskModal from "../components/EditTaskModal";
 
 export default function TaskDetail() {
     //ricavo dati task
@@ -41,9 +42,11 @@ export default function TaskDetail() {
     const task = data.find(t => t.id === parseInt(id));
 
 
-    //stato per show della modale on o ff
+    //stato per show della modale on o ff CONFERMA
     const [show, setShow] = useState(false)
 
+    //STATO PER LA MODALE EDITTASK PER LA MODIFICA
+    const [showTask, SetShowTask] = useState(false)
 
     //funzione per la conferma della modale all invio 
     async function ConfirmModal() {
@@ -61,6 +64,7 @@ export default function TaskDetail() {
 
     }
 
+    
     return (
 
         <div className="container-detail">
@@ -77,6 +81,7 @@ export default function TaskDetail() {
                     <p>Status: {task.status}</p>
                     <p>Creato: {dayjs(task.createdAt).format('DD/MM/YY')} </p>
                     <button onClick={() => setShow(true)} >Elimina Task</button>
+                    <button onClick={() => SetShowTask(true)}>Modifica Task</button>
                 </section>
 
                     :
@@ -92,6 +97,12 @@ export default function TaskDetail() {
                     onConfirm={ConfirmModal}
                 />
 
+
+
+                <EditTaskModal
+                    show={showTask}
+                    onClose={() => SetShowTask(false)}
+                />
 
 
             </div>

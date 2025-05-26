@@ -16,7 +16,6 @@ export default function useTasks(url) {
 
         try {
             const response = await axios.get(url)
-
             SetData(response.data)
 
         } catch (err) {
@@ -27,7 +26,7 @@ export default function useTasks(url) {
             if (!err.response) {
                 throw new Error("Errore di connessione al server");
             }
-            
+
         }
     }
 
@@ -61,36 +60,58 @@ export default function useTasks(url) {
             if (!err.response) {
                 throw new Error("Errore di connessione al server");
             }
-            
+
         }
 
     }
 
     async function removeTask(taskId) {
-        
 
-        try{
+
+        try {
             const response = await axios.delete(`${url}/${taskId}`)
 
             // Caso di successo della chiamata e insuccesso
-            if(response.data.success){
+            if (response.data.success) {
                 SetData(curr => curr.filter(task => {
                     return task.id === taskId ? false : true
                 }))
-            }else{
+            } else {
                 throw new Error(`${response.data.message}`);
             }
 
-        }catch(err){
-            
+        } catch (err) {
+
             if (!err.response) {
                 throw new Error("Errore di connessione al server");
             }
-            
+
         }
     }
 
-    function updateTask() {
+    async function updateTask({ updatedTask }) {
+
+        try {
+            const response = await axios.put(`${url}/${updatedTask.id}`, updatedTask)
+
+            // Caso di successo della chiamata e insuccesso
+            if (response.data.success) {
+                SetData(curr => curr.map(task => {
+                    // Se l'id della task corrente corrisponde all'id della task da aggiornare
+                    // restituisci la nuova versione (updatedTask), altrimenti mantieni la vecchia (task)
+                    return task.id === updatedTask.id ? updatedTask : task
+                }))
+            }else {
+                throw new Error(response.data.message);
+            }
+
+
+        } catch(err) {
+            
+            if(!err.response){
+                throw new Error("Errore di connesione al server");
+            }
+        }
 
     }
 

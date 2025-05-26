@@ -22,7 +22,7 @@ export default function GlobalProvider({ children }) {
 
     return (<>
         
-        <GlobalContext.Provider value={{ data, addTask, getData, removeTask }}>
+        <GlobalContext.Provider value={{ data, addTask, getData, removeTask,updateTask }}>
             {children}
         </GlobalContext.Provider>
 
