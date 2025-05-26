@@ -17,13 +17,13 @@ const TaskRow = memo(({ data }) => {
 
     console.log("SECONDO RENDER");
 
-    
+
 
     return (
         <>
 
             <div className="nome-colonna">
-                <span>Nome</span>
+                <th> <span>Nome</span></th>
                 {data.map(element => (
                     <section key={element.id} className="table-section">
                         <Link to={`task/${element.id}`}>
@@ -78,3 +78,7 @@ const TaskRow = memo(({ data }) => {
 })
 
 export default TaskRow
+
+
+
+
