@@ -25,7 +25,7 @@ import EditTaskModal from "../components/EditTaskModal";
 export default function TaskDetail() {
     //ricavo dati task
     //dati ricavati dalla chiamata Api
-    const { data, getData, removeTask } = useContext(GlobalContext)
+    const { data, getData, removeTask, updateTask } = useContext(GlobalContext)
 
     // rimonto il componente per rifare la chiamata e aggiornare
     useEffect(() => {
@@ -64,7 +64,7 @@ export default function TaskDetail() {
 
     }
 
-    
+
     return (
 
         <div className="container-detail">
@@ -97,12 +97,27 @@ export default function TaskDetail() {
                     onConfirm={ConfirmModal}
                 />
 
-
-
-                <EditTaskModal
+                {/* Se task esiste fammi vedere la modale */}
+                {task && <EditTaskModal
                     show={showTask}
                     onClose={() => SetShowTask(false)}
+                    task={task}
+                    //qua risolvo una promise
+                    onSave={async (updatedTask) => {
+
+                        try {
+                            await updateTask({ updatedTask })
+                            toast.success("Task Modificata con successo")
+                            SetShowTask(false)
+
+                        } catch (err) {
+                            
+                            toast.error("Errore durante la modifica")
+                        }
+                    }}
                 />
+                }
+
 
 
             </div>

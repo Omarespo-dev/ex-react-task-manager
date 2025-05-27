@@ -111,6 +111,8 @@ export default function useTasks(url) {
             if(!err.response){
                 throw new Error("Errore di connesione al server");
             }
+
+            throw err; 
         }
 
     }
