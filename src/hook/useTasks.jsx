@@ -40,6 +40,13 @@ export default function useTasks(url) {
     async function addTask({ title, description, status }) {
 
         try {
+
+            //controllo se c e un titolo uguale
+            if (data.some(task => task.title.toLowerCase() === title.toLowerCase())) {
+                throw new Error("Impossibile creare un nuovo Task con questo titolo già esistente");
+            }
+
+
             const response = await axios.post(url,
                 { title, description, status }
             )
@@ -56,10 +63,15 @@ export default function useTasks(url) {
 
         } catch (err) {
 
-            // Gestiamo specificamente gli errori di rete
             if (!err.response) {
-                throw new Error("Errore di connessione al server");
+                // Se l'errore NON ha la proprietà 'response', significa che NON arriva da Axios (quindi non è un errore di rete/server),
+                // ma è stato generato manualmente nel codice, ad esempio con 'throw new Error("Titolo già esistente")'.
+                // In questo caso, rilanciamo lo stesso errore per farlo gestire dal componente che ha chiamato la funzione.
+                throw err;
             }
+            // Se invece l'errore HA la proprietà 'response', significa che è un errore di rete/server (Axios).
+            // In questo caso, lanciamo un nuovo errore generico per informare l'utente che c'è un problema di connessione.
+            throw new Error("Errore di connessione al server");
 
         }
 
@@ -92,6 +104,12 @@ export default function useTasks(url) {
     async function updateTask({ updatedTask }) {
 
         try {
+
+            // Controllo duplicati escludendo la task che stiamo aggiornando
+            if (data.some(task => task.id !== updatedTask.id && task.title.toLowerCase() === updatedTask.title.toLowerCase())) {
+                throw new Error("Impossibile modificare la Task con questo titolo già esistente");
+            }
+
             const response = await axios.put(`${url}/${updatedTask.id}`, updatedTask)
 
             // Caso di successo della chiamata e insuccesso
@@ -101,18 +119,18 @@ export default function useTasks(url) {
                     // restituisci la nuova versione (updatedTask), altrimenti mantieni la vecchia (task)
                     return task.id === updatedTask.id ? updatedTask : task
                 }))
-            }else {
+            } else {
                 throw new Error(response.data.message);
             }
 
 
-        } catch(err) {
-            
-            if(!err.response){
+        } catch (err) {
+
+            if (!err.response) {
                 throw new Error("Errore di connesione al server");
             }
 
-            throw err; 
+            throw err;
         }
 
     }
