@@ -13,7 +13,7 @@ import { Link, useParams } from 'react-router-dom';
 // mostrerà l'elenco dei task.
 
 
-const TaskRow = memo(({ data }) => {
+const TaskRow = memo(({ data , sortBy , sortOrder}) => {
 
     console.log("SECONDO RENDER");
 
@@ -23,7 +23,14 @@ const TaskRow = memo(({ data }) => {
         <>
 
             <div className="nome-colonna">
-                <th> <span>Nome</span></th>
+                <thead>
+                    <tr>
+                        <th style={{color:'gray'}} >
+                            Nome
+                        </th>
+                    </tr>
+                </thead>
+
                 {data.map(element => (
                     <section key={element.id} className="table-section">
                         <Link to={`task/${element.id}`}>
@@ -38,7 +45,14 @@ const TaskRow = memo(({ data }) => {
 
 
             <div className="stato-colonna">
-                <span>Stato</span>
+                 <thead>
+                    <tr>
+                        <th style={{color:'gray'}}>
+                            Stato
+                        </th>
+                    </tr>
+                </thead>
+
                 {data.map(element => (
                     <section key={element.id} className="table-section">
                         <span style={{
@@ -61,7 +75,14 @@ const TaskRow = memo(({ data }) => {
 
 
             <div className="Created-colonna">
-                <span>Data di Creazione</span>
+                 <thead>
+                    <tr>
+                        <th style={{color:'gray'}}>
+                            Data di creazione
+                        </th>
+                    </tr>
+                </thead>
+
 
                 {data.map(element => (
                     <section key={element.id} className="table-section">
