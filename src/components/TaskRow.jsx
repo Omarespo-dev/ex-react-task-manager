@@ -4,7 +4,7 @@
 import dayjs from 'dayjs';
 
 //importo memo per evitare il re render di questo componente
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 
 
 //import link
@@ -13,25 +13,26 @@ import { Link, useParams } from 'react-router-dom';
 // mostrerà l'elenco dei task.
 
 
-const TaskRow = memo(({ data , sortBy , sortOrder}) => {
+const TaskRow = memo(({ data , sortBy , sortOrder,handleSort ,sortIcon, sortedTask}) => {
 
     console.log("SECONDO RENDER");
 
 
+    
 
     return (
         <>
-
+        
             <div className="nome-colonna">
                 <thead>
                     <tr>
-                        <th style={{color:'gray'}} >
-                            Nome
+                        <th style={{color:'gray'}} onClick={() => handleSort("title")}>
+                            Nome {sortBy === "title" && sortIcon}
                         </th>
                     </tr>
                 </thead>
 
-                {data.map(element => (
+                {sortedTask.map(element => (
                     <section key={element.id} className="table-section">
                         <Link to={`task/${element.id}`}>
                             <span>
@@ -47,13 +48,13 @@ const TaskRow = memo(({ data , sortBy , sortOrder}) => {
             <div className="stato-colonna">
                  <thead>
                     <tr>
-                        <th style={{color:'gray'}}>
-                            Stato
+                        <th style={{color:'gray'}} onClick={() => handleSort("status")}>
+                            Stato {sortBy === "status" && sortIcon}
                         </th>
                     </tr>
                 </thead>
 
-                {data.map(element => (
+                {sortedTask.map(element => (
                     <section key={element.id} className="table-section">
                         <span style={{
                             color: element.status === "To do" ? "red" :
@@ -77,14 +78,14 @@ const TaskRow = memo(({ data , sortBy , sortOrder}) => {
             <div className="Created-colonna">
                  <thead>
                     <tr>
-                        <th style={{color:'gray'}}>
-                            Data di creazione
+                        <th style={{color:'gray'}} onClick={() => handleSort("createdAt")}>
+                            Data di creazione {sortBy === "createdAt" && sortIcon}
                         </th>
                     </tr>
                 </thead>
 
 
-                {data.map(element => (
+                {sortedTask.map(element => (
                     <section key={element.id} className="table-section">
                         <span>
                             {dayjs(element.createdAt).format('DD/MM/YY')}

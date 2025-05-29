@@ -22,51 +22,35 @@ export default function TaskList() {
     getData()
   }, [])
 
-  //Aggiungere due state in TaskList.jsx:
+  //stato per input ricerca
+  const [searchQuery, setSearchQuery] = useState("")
 
-  //ortBy: rappresenta il criterio di ordinamento (title, status, createdAt).
+
+
+  //SortBy: rappresenta il criterio di ordinamento (title, status, createdAt).
   const [sortBy, setSortBy] = useState("createdAt")
 
   //sortOrder: rappresenta la direzione (1 per crescente, -1 per decrescente).
   const [sortOrder, setSortOrder] = useState(1)
 
-  //stato per input ricerca
-  const [searchQuery, setSearchQuery] = useState("")
 
-  function orderFunction(a, b) {
 
+  //icona
+  const sortIcon = sortOrder === 1 ? "↓" : "↑"
+
+  //handleSort
+  const handleSort = (field) => {
+    if (sortBy === field) {
+      setSortOrder(prev => prev * -1)
+    } else {
+      setSortBy(field)
+      setSortOrder(1)
+    }
   }
 
 
 
-
-
-
-
-
-
-
-  // Implementare la logica di ordinamento con useMemo(), in modo che l’array ordinato venga ricalcolato solo quando cambiano tasks, sortBy o sortOrder:
-
-  // Ordinamento per title → alfabetico (localeCompare).
-  const orderTitle = data.sort((a, b) => a.title.localeCompare(b.title))
-
-  // Ordinamento per status → ordine predefinito: "To do" < "Doing" < "Done".
-  //setto gia l ordine
-  const statusOrder = {
-    "To do": 0,
-    "Doing": 1,
-    "Done": 2
-  };
-
-  const orderStatus = data.sort
-  // Ordinamento per createdAt → confrontando il valore numerico della data (.getTime()).
-  // Applicare sortOrder per definire se l’ordine è crescente o decrescente.
-
-
-
   //Modificare l'useMemo() per filtrare e ordinare i task
-
   // Applicare il filtraggio basato su searchQuery.
   const filtered = useMemo(() => {
     // console.log("Filtraggio eseguito");
@@ -76,26 +60,47 @@ export default function TaskList() {
     )
   }, [data, searchQuery])
 
-  
+
+
+  // Poi: ordina i filtrati
+  const filteredAndSorted = useMemo(() => {
+    return [...filtered].sort((a, b) => {
+      let comparison;
+      if (sortBy === "title") {
+        comparison = a.title.localeCompare(b.title)
+      } else if (sortBy === "status") {
+        const statusOption = ["To do", "Doing", "Done"]
+        comparison = statusOption.indexOf(a.status) - statusOption.indexOf(b.status)
+      } else if (sortBy === "createdAt") {
+        comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      }
+      return comparison * sortOrder
+    })
+  }, [filtered, sortBy, sortOrder])
+
 
   // La ricerca deve essere case insensitive.
   // Ordinare i risultati in base ai criteri esistenti (es. nome, stato, data di creazione).
   return (<>
+  
     <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
       <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
-      
     </div>
 
     <div className="table-container">
 
+      {filteredAndSorted.length > 0 ?
       <div className="table">
 
         <div className="intestazione-set">
-          <TaskRow data={filtered} sortBy={{ sortBy, setSortBy }} sortOrder={{ sortOrder, setSortOrder }} />
+          <TaskRow data={filtered} sortBy={sortBy} sortOrder={sortOrder} handleSort={handleSort} sortIcon={sortIcon} sortedTask={filteredAndSorted} /> 
+          
         </div>
 
 
       </div>
+
+      : <p>Nessuna Task trovata</p>}
 
     </div>
   </>
