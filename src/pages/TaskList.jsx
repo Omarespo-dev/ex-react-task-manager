@@ -5,9 +5,21 @@ import TaskRow from "../components/TaskRow"
 //Mi servono i dati fatti dalla chiamata importo globalContex
 import { GlobalContext } from "../contexts/GlobalContext"
 //importo il useContext cosi posso utilizzare il contex
-import { useContext, useEffect, useMemo, useState } from "react"
+import { useCallback, useContext, useEffect, useMemo, useState } from "react"
 
+//Funzione di debounce
+function debounce(callback, delay) {
 
+  //clouser
+  let timer;
+
+  return (value) => {
+    clearInterval(timer)
+    timer = setTimeout(() => {
+      callback(value)
+    }, delay)
+  }
+}
 
 
 export default function TaskList() {
@@ -24,8 +36,10 @@ export default function TaskList() {
 
   //stato per input ricerca
   const [searchQuery, setSearchQuery] = useState("")
-
-
+  // funzione input debouncata
+  const debounceSetSearchQuery = useCallback(
+    debounce(setSearchQuery, 500)
+    , [])
 
   //SortBy: rappresenta il criterio di ordinamento (title, status, createdAt).
   const [sortBy, setSortBy] = useState("createdAt")
@@ -82,25 +96,25 @@ export default function TaskList() {
   // La ricerca deve essere case insensitive.
   // Ordinare i risultati in base ai criteri esistenti (es. nome, stato, data di creazione).
   return (<>
-  
+
     <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
-      <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
+      <input type="text"  onChange={e => debounceSetSearchQuery(e.target.value)} />
     </div>
 
     <div className="table-container">
 
       {filteredAndSorted.length > 0 ?
-      <div className="table">
+        <div className="table">
 
-        <div className="intestazione-set">
-          <TaskRow data={filtered} sortBy={sortBy} sortOrder={sortOrder} handleSort={handleSort} sortIcon={sortIcon} sortedTask={filteredAndSorted} /> 
-          
+          <div className="intestazione-set">
+            <TaskRow data={filtered} sortBy={sortBy} sortOrder={sortOrder} handleSort={handleSort} sortIcon={sortIcon} sortedTask={filteredAndSorted} />
+
+          </div>
+
+
         </div>
 
-
-      </div>
-
-      : <p>Nessuna Task trovata</p>}
+        : <p>Nessuna Task trovata</p>}
 
     </div>
   </>
